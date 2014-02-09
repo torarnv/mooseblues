@@ -115,10 +115,9 @@ a:after {
 }
 
 /* Portfolio Wrap */
-#portfoliowrap {
-	background: url(../img/portfolio-bg.jpg) no-repeat center top;
+#syttendemaiwrap {
+	background: url(../img/17mai.jpg) no-repeat center top;
 	margin-top: 0px;
-	padding-top:35px;
 	text-align:center;
 	background-attachment: relative;
 	background-position: center center;
@@ -134,11 +133,23 @@ a:after {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+
+
 }
 
+#syttendemaiwrap .container {
+	padding-top:35px;
+	padding-bottom: 20px;
+	
+}
 
-#portfoliowrap h3 {
+#syttendemaiwrap, #syttendemaiwrap h3 {
 	color: #ffffff;
+	font-weight: 400;
+}
+
+#syttendemaiwrap p {
+	text-align: justify;
 }
 
 .port-space {
