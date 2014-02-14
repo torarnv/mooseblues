@@ -484,6 +484,19 @@ a:after {
 			transition: all .1s ease-in-out;
 }
 
+/* Schedule */
+#schedule h4, #schedule h5 {
+	text-align: center;
+	margin-top: 0px;
+}
+
+#schedule h4 {
+	font-weight: 500;
+}
+
+#schedule th {
+	padding-top: 2px;
+}
 
 /* BUTTON CONF */
 
