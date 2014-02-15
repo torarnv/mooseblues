@@ -24,7 +24,7 @@
 						$("*[name*='" + field + "']").attr('name', "$" + mappings[field]);
 				
 					if (window.location.hostname == "www.mooseblues.no")
-						var redirect = "https://deltager.no/moose_blues_2014"
+						var redirect = "https://www.deltager.no/moose_blues_2014"
 					else
 						var redirect = "deltager.html"
 
