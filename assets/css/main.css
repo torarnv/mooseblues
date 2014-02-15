@@ -498,6 +498,59 @@ a:after {
 	padding-top: 2px;
 }
 
+/* Sign up */
+#signup-form {
+	text-align: left;
+}
+
+#signup-form .help-block img {
+	opacity: 0.3;
+}
+
+#signup-form .help-block img:hover {
+	opacity: 1.0;
+}
+
+@media (max-width: 768px) {
+	#payment-options, #payment-provider {
+		text-align: center;
+	}
+}
+
+@media (min-width: 768px) {
+	#payment-options {
+		float: left;
+		line-height: 32px;
+	}
+
+	#payment-provider {
+		float: right;
+		line-height: 32px;
+	}
+}
+
+@media (min-width: 768px) {
+	#role-container label {
+		padding-top: 2px;
+	}
+
+	#role-container .form-group {
+		padding-top: 1px;
+	}
+}
+
+.form-error {
+	display: none !important;
+}
+
+.has-error .radio-inline {
+	color: #b94a48;
+}
+
+#dnblogo {
+	padding-bottom: 3px;
+}
+
 /* BUTTON CONF */
 
 .btn-theme {
