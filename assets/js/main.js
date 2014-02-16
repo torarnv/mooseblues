@@ -71,4 +71,11 @@
 
 			if (window.location.hash.indexOf("testsignup") != -1)
 				$("#signup-button").removeAttr("disabled");
+
+
+
+			$('#schedule-calendar').fullCalendar({
+   				events: "https://www.google.com/calendar/feeds/rksrr5n0pri7qd9sfmguqs5moc%40group.calendar.google.com/public/full"
+    		});
+
 })(jQuery)

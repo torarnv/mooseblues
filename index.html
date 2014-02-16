@@ -33,6 +33,9 @@
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/Chart.js"></script>
+
+    <link rel='stylesheet' href='assets/css/fullcalendar.css' />
+	<script src='assets/js/fullcalendar.min.js'></script>
     <!--<script src="assets/js/modernizr.custom.js"></script>-->
     
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
@@ -54,9 +57,9 @@
             <a href="#home" class="smoothScroll">Home</a>
             <a href="#about" class="smoothScroll">About</a>
             <a href="#teachers" class="smoothScroll">Teachers</a>
-            <a href="#tracks" class="smoothScroll">Tracks</a>
+            <a href="#classes" class="smoothScroll">Classes</a>
             <a href="#syttendemai" class="smoothScroll">17. of May</a>
-            <a href="#register" class="smoothScroll">Register</a>
+            <a href="#signup" class="smoothScroll">Sign-up</a>
             <a href="#contact" class="smoothScroll">Contact</a>
         </div>
         
@@ -270,16 +273,18 @@
     </div>
     -->
     
-    <section id="tracks" name="tracks"></section>
+    <section id="classes" name="classes"></section>
     <div id="w">
         <div class="container">
             <div class="row">
-                <h3>CLASSES</h3>
+                <h3>SCHEDULE</h3>
                 <br>
+                <div id="schedule-calendar" style="display:none"></div>
                 <!--<div class="col-md-6">
 	                <p></p>
 	            </div>
 	            -->
+	            
 	            <div class="col-md-8 col-md-offset-2">
 				  <table class="table table-hover" id="schedule">
 			      <thead>
@@ -296,6 +301,7 @@
 			      </tbody>
 			    </table>
 	            </div>
+	            
             </div>
         </div>
     </div>
