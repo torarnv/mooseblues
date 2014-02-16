@@ -72,10 +72,34 @@
 			if (window.location.hash.indexOf("testsignup") != -1)
 				$("#signup-button").removeAttr("disabled");
 
+			var showSchedule = false;
+			if (window.location.hash.indexOf("showschedule") != -1)
+				showSchedule = true;
 
+			if (showSchedule) {
+				$("#schedule-soon").remove();
+				
+				var calendar_json_url = "http://www.google.com/calendar/feeds/rksrr5n0pri7qd9sfmguqs5moc%40group.calendar.google.com/public/full?alt=json&&orderby=starttime&sortorder=ascending&futureevents=true"
+				var events = {};
 
-			$('#schedule-calendar').fullCalendar({
-   				events: "https://www.google.com/calendar/feeds/rksrr5n0pri7qd9sfmguqs5moc%40group.calendar.google.com/public/full"
-    		});
+		   	    $.getJSON(calendar_json_url, function(data) {
+		   	    	$.each(data.feed.entry, function(i, item){
+
+				    	var start = moment(item.gd$when[0].startTime)
+				      	var end = moment(item.gd$when[0].endTime)
+
+				      	var content = "<div class='event' style='min-height:" + end.diff(start, 'minutes') * 0.5 + "px'>";
+				     	 content += "<span class='time'>" + start.format("HH:mm") + "-" + end.format("HH:mm") + "</span> ";
+				     	 content += "<span class='title'>" + item.title.$t + "</span>";
+
+				     	 var where = item.gd$where[0].valueString;
+				     	 if (where.length > 0)
+				     	 	content += "<br><span class='location'>" + where + "</span>";
+
+				      	content += "</div>"
+				      	$("#schedule #day-" + start.date()).append(content);
+				    });
+				});
+		   	} 
 
 })(jQuery)
