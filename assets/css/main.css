@@ -240,7 +240,7 @@ a:after {
 	text-align: center
 }
 
-#f h3 {
+#f h3, #f h4, #f h5 {
 	color: white;	
 }
 
