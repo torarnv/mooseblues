@@ -79,7 +79,7 @@ a:after {
    ========================================================================== */
 
 #headerwrap {
-	background: url(../img/lofoten.jpg) no-repeat center top;
+	background: url(../img/lofoten_mini.jpg) no-repeat center top;
 	margin-top: -10px;
 	padding-top:20px;
 	text-align:center;
@@ -141,7 +141,7 @@ a:after {
 
 /* Portfolio Wrap */
 #syttendemaiwrap {
-	background: url(../img/17mai.jpg) no-repeat center top;
+	background: url(../img/17mai_cropped_mini.jpg) no-repeat center top;
 	margin-top: 0px;
 	text-align:center;
 	background-attachment: relative;
