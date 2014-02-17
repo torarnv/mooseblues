@@ -28,7 +28,8 @@
 					else
 						var redirect = "deltager.html"
 
-					window.location.href = redirect + "#" + $(form).serialize(); 
+					var formData = $(form).serialize().replace(/\+/g, '%20');
+					window.location.href = redirect + "#" + formData;
 				},
 			  rules: {
 			    firstname: {
