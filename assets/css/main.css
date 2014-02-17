@@ -181,6 +181,13 @@ a:after {
 	padding-bottom: 20px;
 }
 
+#practicalwrap p {
+	text-align: justify;
+}
+
+#accomodation p, #venues p  {
+	/*padding-left: 50px;*/
+}
 
 /*  Stuff */
 
@@ -509,6 +516,7 @@ a:after {
 	/*border: 1px solid #e1e1e8;
 	border-radius: 4px;*/
 	min-height: 40px;
+	text-align: left;
 }
 
 .event .time {
@@ -524,6 +532,61 @@ a:after {
 .event .location {
 	font-style: italic;
 }
+
+
+/* Practical */
+
+.location-container .location {
+	text-align: left;
+	padding-bottom: 25px;
+}
+
+.location-container .location .name {
+	font-weight: 400;
+}
+.location-container .location .address {
+	font-style: italic;
+}
+.location-container .location .info {
+	margin-top: 10px;
+}
+
+.location-container .location .buttons {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding-top: 12px;
+	font-size: 22pt;
+	color: #bbbbbb;
+	text-align: center;
+	min-width: 150px;
+}
+
+.glyphicon-map-marker {
+	display: none;
+}
+
+.location-container .location .buttons a {
+	color: #bbbbbb;
+}
+
+.location-container .location .buttons a:hover {
+	color: #aaaaaa;
+}
+
+#accomodation .buttons {
+}
+
+#venues .buttons {
+}
+
+/* Map */
+
+#mapwrap {
+	max-width: none;
+	height: 400px;
+}
+
 
 /* Sign up */
 #signup-form {

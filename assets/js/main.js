@@ -69,10 +69,12 @@
 
 			$("#signup-form").sisyphus();
 
-			if (window.location.hash.indexOf("testsignup") != -1)
+			var isDev = window.location.host.indexOf("dev.mooseblues.no" != -1);
+
+			if (isDev || window.location.hash.indexOf("testsignup") != -1)
 				$("#signup-button").removeAttr("disabled");
 
-			var showSchedule = false;
+			var showSchedule = isDev;
 			if (window.location.hash.indexOf("showschedule") != -1)
 				showSchedule = true;
 
