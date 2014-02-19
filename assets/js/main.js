@@ -82,22 +82,51 @@
         var calendar_json_url = "http://www.google.com/calendar/feeds/rksrr5n0pri7qd9sfmguqs5moc%40group.calendar.google.com/public/full?alt=json&&orderby=starttime&sortorder=ascending&futureevents=true"
         var events = {};
 
-           $.getJSON(calendar_json_url, function(data) {
-               $.each(data.feed.entry, function(i, item){
+        $.getJSON(calendar_json_url, function(data) {
+
+            var block;
+
+            var previousStart;
+            var previousEnd;
+
+            $.each(data.feed.entry, function(i, item){
 
                 var start = moment(item.gd$when[0].startTime)
                 var end = moment(item.gd$when[0].endTime)
 
-                var content = "<div class='event' style='min-height:" + end.diff(start, 'minutes') * 0.5 + "px'>";
-                content += "<span class='time'>" + start.format("HH:mm") + "-" + end.format("HH:mm") + "</span> ";
+                if (!start.isSame(previousStart))
+                    block = $("<div>").addClass("block");
+
+                var event = $("<div>").addClass("event");
+
+                // Try to make events look like they have a proportionate duration
+                event.css("min-height", end.diff(start, 'minutes') * 0.5 + "px");
+
+                var content = "";
+                content += "<span class='time'>" + start.format("HH:mm") + "-" + end.format("HH:mm") + "</span><br>";
                 content += "<span class='title'>" + item.title.$t + "</span>";
 
                 var where = item.gd$where[0].valueString;
+                where = where.replace(/, Oslo, Norge$/, "");
                 if (where.length > 0)
                     content += "<br><span class='location'>" + where + "</span>";
 
-                content += "</div>"
-                $("#schedule #day-" + start.date()).append(content);
+                event.append(content);
+
+                block.append($("<div>").addClass("event-container").append(event));
+
+                var day = $("#schedule #day-" + start.date());
+
+                // Possibly re-append of already appended block, but that's okey
+                day.append(block);
+
+                if (end.isSame(previousEnd)) {
+                    // Make all events same height
+                    $(day).find(".block:last .event").css("height", "100%");
+                }
+
+                previousStart = start;
+                previousEnd = end;
             });
         });
     }
