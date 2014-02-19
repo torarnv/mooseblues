@@ -100,6 +100,23 @@
 				      	$("#schedule #day-" + start.date()).append(content);
 				    });
 				});
-		   	} 
+            }
+
+            // Async Google Maps loading
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC19zE5nFPp669pJnxNQc7lJqZaKybsM8E&sensor=false' +
+              '&callback=initializeMap';
+            document.body.appendChild(script);
 
 })(jQuery)
+
+function initializeMap() {
+    var mapOptions = {
+        center: new google.maps.LatLng(59.9083175,10.7562774),
+        zoom: 11,
+        scrollwheel: false
+    };
+
+    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+}
