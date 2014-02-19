@@ -607,6 +607,9 @@ a:after {
 #mapwrap {
 	max-width: none;
 	height: 400px;
+	
+	background-attachment: relative;
+	background-position: center center;
 }
 
 

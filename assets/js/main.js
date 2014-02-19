@@ -144,7 +144,8 @@ function initializeMap() {
     var mapOptions = {
         center: new google.maps.LatLng(59.9083175,10.7562774),
         zoom: 11,
-        scrollwheel: false
+        scrollwheel: false,
+        backgroundColor: "transparent"
     };
 
     var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
