@@ -274,6 +274,15 @@ a:after {
 	color: gray;
 }
 
+#c .copyright {
+    margin-bottom: 0px;
+}
+
+#c .credits {
+    color: #555;
+    margin-top: -5px;
+}
+
 /* item Wrap */
 
 #itemwrap {
