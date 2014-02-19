@@ -70,8 +70,7 @@
 
 			$("#signup-form").sisyphus();
 
-			var isDev = false;//window.location.host.indexOf("dev.mooseblues.no" != -1);
-
+			var isDev = window.location.host.indexOf("dev.mooseblues.no") != -1;
 			
 			var showSchedule = isDev;
 			if (window.location.hash.indexOf("showschedule") != -1)
