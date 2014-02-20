@@ -140,13 +140,48 @@
 
 })(jQuery)
 
+var map;
+
+function addMarker(pos) {
+	new google.maps.Marker({
+		position: pos,
+    	map: map,
+    	draggable: false,
+    	animation: google.maps.Animation.DROP
+  	});
+}
+
+function addMarkers() {
+	// Route through YQL since Google Mapsengine doesn't do CORS for KML
+	$.getJSON("http://query.yahooapis.com/v1/public/yql", {
+		q: "select * from xml where url=\"https://mapsengine.google.com/map/kml?" +
+			"mid=z01mYUD2Vnfo.kW22snNl3_zQ&lid=z01mYUD2Vnfo.kt6p-FRSwQG8\"",
+		format: "json"
+	},
+	function (data) {
+		$.each(data.query.results.kml.Document.Placemark, function(i, place) {
+			
+			var coords = place.Point.coordinates.split(',', 2);
+			var pos = new google.maps.LatLng(coords[1], coords[0]);
+
+			setTimeout(function() {
+      			addMarker(pos);
+    		}, i * 200);
+		});
+	});
+}
+
 function initializeMap() {
     var mapOptions = {
-        center: new google.maps.LatLng(59.9083175,10.7562774),
-        zoom: 11,
+        center: new google.maps.LatLng(59.9133175,10.7562774),
+        zoom: 13,
         scrollwheel: false,
         backgroundColor: "transparent"
     };
 
-    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+    $('#mapwrap').waypoint(function() {
+  		addMarkers();
+	}, { offset: '50%', triggerOnce: true });
 }
