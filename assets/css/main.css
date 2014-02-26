@@ -367,6 +367,8 @@ a:after {
 	background: #1a1a1a;
 	width: 200px;
 	height: 100%;
+	overflow: scroll;
+	padding-bottom: 50px;
 }
 
 .menu h1.logo a {
