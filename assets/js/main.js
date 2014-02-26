@@ -1,11 +1,15 @@
 ;(function(){
 
-    // Menu settings
-    $('#menuToggle, .menu-close').on('click', function(){
-        $('#menuToggle').toggleClass('active');
+	function toggleMenu() {
+		$('#menuToggle').toggleClass('active');
         $('body').toggleClass('body-push-toleft');
         $('#theMenu').toggleClass('menu-open');
-    });
+	}
+
+    // Menu settings
+    $('#menuToggle, .menu-close').on('click', toggleMenu);
+
+    $('.menu-wrap a').on('click', toggleMenu);
 
     $('#signup-form').validate({
         submitHandler: function(form) {
