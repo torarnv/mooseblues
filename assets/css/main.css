@@ -242,8 +242,8 @@ a:after {
 
 #f {
 	background: #2f2f2f;
-	padding-top: 70px;
-	padding-bottom: 70px;
+	padding-top: 35px;
+	padding-bottom: 35px;
 	text-align: center
 }
 
@@ -262,7 +262,8 @@ a:after {
 
 #c {
 	background: #222222;
-	padding-top: 15px;
+	padding-top: 25px;
+	padding-bottom: 2px;
 	text-align: center;
 }
 
@@ -275,12 +276,12 @@ a:after {
 }
 
 #c .copyright {
-    margin-bottom: 0px;
+    margin-bottom: 10px;
 }
 
 #c .credits {
     color: #555;
-    margin-top: -5px;
+    line-height: 20px;
 }
 
 /* item Wrap */
