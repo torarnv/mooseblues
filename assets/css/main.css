@@ -365,7 +365,7 @@ a:after {
 .menu {
 	position: fixed;
 	right: -200px;
-	width: 260px;
+	width: 200px;
 	height: 100%;
 	top: 0;
 	z-index: 10;
@@ -379,7 +379,7 @@ a:after {
 .menu-wrap {
 	position: absolute;
 	top: 0;
-	left: 60px;
+	left: 0px;
 	background: #1a1a1a;
 	width: 200px;
 	height: 100%;
@@ -491,7 +491,7 @@ a:after {
 #menuToggle {
 	position: absolute;
 	top: 20px;
-	left: 0;
+	left: -60px;
 	z-index: 11;
 	display: block;
 	text-align: center;
