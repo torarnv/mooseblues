@@ -155,8 +155,15 @@ function initializeMap() {
         center: new google.maps.LatLng(59.9083175,10.7562774),
         zoom: 11,
         scrollwheel: false,
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
+        mapTypeControl: false
     };
 
     var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+    var mapUrl = "https://mapsengine.google.com/map/edit?mid=z01mYUD2Vnfo.kW22snNl3_zQ"
+
+    var externalButton = $("#open-external-map")
+    $(externalButton).on('click', function() { window.open(mapUrl,'_blank'); });
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(externalButton[0]);
 }

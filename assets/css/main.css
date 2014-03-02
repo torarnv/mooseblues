@@ -631,6 +631,36 @@ a:after {
 	background-position: center center;
 }
 
+.gm-button {
+	margin: 5px;
+	z-index: 0;
+	position: absolute;
+	cursor: pointer;
+	right: 0px; top: 0px;
+	direction: ltr;
+	overflow: hidden;
+	text-align: center;
+	position: relative;
+	color: rgb(0, 0, 0);
+	font-family: Roboto, Arial, sans-serif;
+	-webkit-user-select: none;
+	font-size: 11px;
+	background-color: rgb(255, 255, 255);
+	padding: 1px 6px;
+	border-bottom-left-radius: 2px;
+	border-top-left-radius: 2px;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	border: 1px solid rgba(0, 0, 0, 0.14902);
+	-webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+	box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+	min-width: 23px; font-weight: 500;
+}
+
+.gm-button:hover {
+	background-color: rgb(235, 235, 235);
+}
+
 
 /* Sign up */
 #signup-form {
