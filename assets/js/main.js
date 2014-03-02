@@ -155,7 +155,7 @@ function initializeMap() {
         center: new google.maps.LatLng(59.9083175,10.7562774),
         zoom: 11,
         scrollwheel: false,
-        backgroundColor: "transparent",
+        backgroundColor: "#e0e0e0",
         mapTypeControl: false
     };
 
