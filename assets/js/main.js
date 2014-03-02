@@ -98,6 +98,8 @@
                 var start = moment(item.gd$when[0].startTime)
                 var end = moment(item.gd$when[0].endTime)
 
+                var day = $("#schedule div.date#" + start.format("YYYY-MM-DD"));
+
                 if (!start.isSame(previousStart))
                     block = $("<div>").addClass("block");
 
@@ -118,8 +120,6 @@
                 event.append(content);
 
                 block.append($("<div>").addClass("event-container").append(event));
-
-                var day = $("#schedule #day-" + start.date());
 
                 // Possibly re-append of already appended block, but that's okey
                 day.append(block);
