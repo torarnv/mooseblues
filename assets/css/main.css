@@ -79,14 +79,16 @@ a:after {
    ========================================================================== */
 
 #headerwrap {
-	background: url(../img/oslo_crop_smush.jpg) no-repeat center top;
-	margin-top: -10px;
-	padding-top:20px;
-	text-align:center;
-	background-attachment: relative;
-	background-position: center center;
-	min-height: 700px;
-	width: 100%;
+    background: url(../img/oslo_crop_smush.jpg) no-repeat center top;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    text-align:center;
+    background-attachment: relative;
+    background-position: center center;
+    min-height: 700px;
+    width: 100%;
 
     -webkit-background-size: 100%;
     -moz-background-size: 100%;
@@ -97,18 +99,6 @@ a:after {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-}
-
-@media (max-width: 768px) {
-	#headerwrap {
-		min-height: 400px;
-	}
-	#mooselogo {
-		width: 75%;
-		margin-left: 12.5%;
-		max-height: 500px;
-		max-width: 500px;
-	}
 }
 
 #headerwrap .container {
@@ -122,6 +112,32 @@ a:after {
 }
 
 #mooselogo {
+	background-color: rgba(255, 255, 255, 0.8);
+    max-height: 800px;
+    max-width: 800px;
+}
+
+#mooselogo:before{
+    content: "";
+    display: block;
+    padding-top: 100%;  /* initial ratio of 1:1*/
+}
+
+#mooselogo img {
+	width: 100%;
+    margin-top: -100%;
+}
+
+@media (max-width: 767px) {
+    #headerwrap {
+        min-height: 400px;
+    }
+    #mooselogo {
+        width: 75%;
+        margin-left: 12.5%;
+        max-height: 450px;
+        max-width: 450px;
+    }
 }
 
 #headerwrap h1 {
@@ -629,7 +645,7 @@ a:after {
 	opacity: 1.0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 	#payment-options, #payment-provider {
 		text-align: center;
 	}
@@ -687,15 +703,6 @@ a:after {
 	color: white;
 	background-color: #16a085;
 	
-}
-
-
-#mooselogo {
-	background-color: rgba(255, 255, 255, 0.8);
-}
-
-#mooselogo img {
-	width: 100%;
 }
 
 /* TEAM CONF */
