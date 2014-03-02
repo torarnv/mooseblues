@@ -633,7 +633,7 @@ a:after {
 
 .gm-button {
 	margin: 5px;
-	z-index: 0;
+	z-index: 1000 !important;
 	position: absolute;
 	cursor: pointer;
 	right: 0px; top: 0px;
@@ -661,6 +661,13 @@ a:after {
 	background-color: rgb(235, 235, 235);
 }
 
+.pan-blocker {
+	width: 60px;
+	height: 100%;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
 
 /* Sign up */
 #signup-form {

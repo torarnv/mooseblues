@@ -163,7 +163,16 @@ function initializeMap() {
 
     var mapUrl = "https://mapsengine.google.com/map/edit?mid=z01mYUD2Vnfo.kW22snNl3_zQ"
 
-    var externalButton = $("#open-external-map")
+    var externalButton = $("#open-external-map");
     $(externalButton).on('click', function() { window.open(mapUrl,'_blank'); });
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(externalButton[0]);
+
+    google.maps.event.addListenerOnce(map, 'tilesloaded', function(evt) {
+        $("#open-external-map").show();
+    });
+
+    // Allow scrolling on mobile devices even if map covers viewport
+    var panBlocker = document.createElement("div");
+    panBlocker.className = "pan-blocker";
+    map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(panBlocker);
 }
