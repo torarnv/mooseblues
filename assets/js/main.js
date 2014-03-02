@@ -98,18 +98,24 @@
                 var start = moment(item.gd$when[0].startTime)
                 var end = moment(item.gd$when[0].endTime)
 
+                var duration = end.diff(start, 'minutes')
+                var isAllDay = duration == (60 * 24);
+                if (isAllDay)
+                    duration = 60;
+
                 var day = $("#schedule div.date#" + start.format("YYYY-MM-DD"));
 
-                if (!start.isSame(previousStart))
+                if (!start.isSame(previousStart) || isAllDay)
                     block = $("<div>").addClass("block");
 
                 var event = $("<div>").addClass("event");
 
                 // Try to make events look like they have a proportionate duration
-                event.css("min-height", end.diff(start, 'minutes') * 0.5 + "px");
+                event.css("min-height", duration * 0.5 + "px");
 
                 var content = "";
-                content += "<span class='time'>" + start.format("HH:mm") + "-" + end.format("HH:mm") + "</span><br>";
+                if (!isAllDay)
+                    content += "<span class='time'>" + start.format("HH:mm") + "-" + end.format("HH:mm") + "</span><br>";
                 content += "<span class='title'>" + item.title.$t + "</span>";
 
                 var where = item.gd$where[0].valueString;
