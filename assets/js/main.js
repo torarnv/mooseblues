@@ -150,16 +150,70 @@
 
 })(jQuery)
 
+function getDPR() {
+  var mediaQuery;
+  // Fix fake window.devicePixelRatio on mobile Firefox
+  var is_firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+  if (window.devicePixelRatio !== undefined && !is_firefox) {
+    return window.devicePixelRatio;
+  } else if (window.matchMedia) {
+      mediaQuery = "(-webkit-min-device-pixel-ratio: 1.5),\
+            (min--moz-device-pixel-ratio: 1.5),\
+            (-o-min-device-pixel-ratio: 3/2),\
+            (min-resolution: 1.5dppx)";
+    if (window.matchMedia(mediaQuery).matches)
+      return 1.5;
+      mediaQuery = "(-webkit-min-device-pixel-ratio: 2),\
+            (min--moz-device-pixel-ratio: 2),\
+            (-o-min-device-pixel-ratio: 2/1),\
+            (min-resolution: 2dppx)";
+    if (window.matchMedia(mediaQuery).matches)
+      return 2;
+      mediaQuery = "(-webkit-min-device-pixel-ratio: 0.75),\
+            (min--moz-device-pixel-ratio: 0.75),\
+            (-o-min-device-pixel-ratio: 3/4),\
+            (min-resolution: 0.75dppx)";
+    if (window.matchMedia(mediaQuery).matches)
+      return 0.7;
+  } else
+    return 1;
+}
+
+var viewportHeight = $(window).height();
+var mapwrap = $("#mapwrap");
+
+function mapIsVisible() {
+    var bounds = mapwrap[0].getBoundingClientRect();
+    if ((bounds.top + (bounds.height / 2)) < viewportHeight)
+        return true; // We can see over 50% of the map
+
+    return false;
+}
+
+function centerMapInViewport() {
+    if (mapIsVisible())
+        return false; // No need
+
+    var offset = (viewportHeight - mapwrap.height()) / 2;
+    $.scrollTo(mapwrap, 400, { offset: -offset });
+    return true;
+}
+
+var map;
+var markers = []
+var markersDone = false;
+var openInfoWindow;
+
 function initializeMap() {
     var mapOptions = {
-        center: new google.maps.LatLng(59.9083175,10.7562774),
-        zoom: 11,
+        center: new google.maps.LatLng(59.9133175,10.7562774),
+        zoom: 13,
         scrollwheel: false,
         backgroundColor: "#e0e0e0",
         mapTypeControl: false
     };
 
-    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
     var mapUrl = "https://mapsengine.google.com/map/edit?mid=z01mYUD2Vnfo.kW22snNl3_zQ"
 
@@ -175,4 +229,134 @@ function initializeMap() {
     var panBlocker = document.createElement("div");
     panBlocker.className = "pan-blocker";
     map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(panBlocker);
+
+    // Fetch markers
+
+    // Route through YQL since Google Mapsengine doesn't do CORS for KML
+    $.getJSON("http://query.yahooapis.com/v1/public/yql", {
+        q: "select * from xml where url=\"https://mapsengine.google.com/map/kml?" +
+            "mid=z01mYUD2Vnfo.kW22snNl3_zQ&lid=z01mYUD2Vnfo.kt6p-FRSwQG8\"",
+        format: "json"
+    },
+    function (data) {
+        $.each(data.query.results.kml.Document.Placemark, function(i, place) {
+
+            var coords = place.Point.coordinates.split(',', 2);
+            var pos = new google.maps.LatLng(coords[1], coords[0]);
+
+            var dpr = getDPR();
+            var marker = new google.maps.Marker({
+                position: pos,
+                draggable: false,
+                animation: google.maps.Animation.DROP,
+                title: place.name
+            });
+
+            var infowindow = new google.maps.InfoWindow({
+                content: "<b>" + place.name + "</b>"
+            });
+
+            google.maps.event.addListener(marker, 'click', function() {
+                if (openInfoWindow)
+                    openInfoWindow.close();
+
+                infowindow.open(map, marker);
+                openInfoWindow = infowindow;
+            });
+
+            var extendedData = place.ExtendedData;
+            if (!$.isArray(extendedData))
+                extendedData = [extendedData];
+
+            $.each(extendedData, function(i, data) {
+                data = data.Data;
+
+                if (data.value == null)
+                    return true; // next
+
+                if (data.displayName == "id") {
+                    var item = $("#" + data.value);
+                    item.wrap($("<a>").click(function() {
+                        if (!marker.getMap())
+                            marker.setMap(map);
+
+                        marker.setAnimation(google.maps.Animation.BOUNCE);
+                        setTimeout(function() {
+                            marker.setAnimation(null);
+                        }, 1400 /* bounce twice */);
+
+                        if (map.getZoom() < 15)
+                            map.setZoom(15);
+
+                        allowDropMarkers = true; // Just in case
+
+                        if (centerMapInViewport())
+                            map.setCenter(marker.getPosition());
+                        else
+                            map.panTo(marker.getPosition());
+                    }));
+
+                    item.css("display", "inline-block");
+
+                } else if (data.displayName == "icon") {
+                    var iconSize = 36;
+                    var baseurl = "http://mt.google.com/vt/icon/name=icons/spotlight/";
+                    if (data.value.indexOf("custom/") == 0) {
+                        baseurl = "/assets/img/"
+                        data.value = data.value.replace("custom/", "");
+                        if (dpr > 1)
+                            data.value += "_" + dpr + "x";
+                        data.value += ".png"
+                    } else {
+                        data.value += ".png&scale=" + (1.5 * dpr)
+                    }
+
+                    var icon = {
+                        url: baseurl + data.value,
+                        size: new google.maps.Size(iconSize * dpr , iconSize * dpr),
+                        scaledSize: new google.maps.Size(iconSize, iconSize),
+                        anchor: new google.maps.Point(iconSize / 2, iconSize / 2)
+                    };
+                    marker.setIcon(icon);
+                }
+            });
+
+            markers.push(marker);
+        });
+
+        markersDone = true;
+        dropMarkersIfPossble();
+    });
 }
+
+var mapWasInViewport = false;
+
+function dropMarkersIfPossble() {
+    if (!mapWasInViewport)
+        return;
+
+    if (!markersDone) {
+        setTimeout(dropMarkersIfPossble, 250);
+        return;
+    }
+
+    $.each(markers, function(i, marker) {
+        if (marker.getMap())
+            return true;
+
+        setTimeout(function() {
+            marker.setMap(map);
+        }, i * 200);
+    });
+}
+
+function checkIfMapIsVisible() {
+    if (mapIsVisible()) {
+        $(window).unbind('scroll', checkIfMapIsVisible);
+        mapWasInViewport = true;
+        dropMarkersIfPossble();
+    }
+}
+
+$(window).scroll($.throttle( 100, checkIfMapIsVisible));
+
