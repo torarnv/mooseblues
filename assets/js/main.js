@@ -81,7 +81,7 @@
         showSchedule = true;
 
     if (showSchedule) {
-        $("#schedule-soon").remove();
+        //$("#schedule-soon").remove();
 
         var calendar_json_url = "http://www.google.com/calendar/feeds/rksrr5n0pri7qd9sfmguqs5moc%40group.calendar.google.com/public/full?alt=json&&orderby=starttime&sortorder=ascending&futureevents=true"
         var events = {};
