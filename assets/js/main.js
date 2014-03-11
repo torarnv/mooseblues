@@ -76,7 +76,7 @@
 
     var isDev = window.location.host.indexOf("dev.mooseblues.no") != -1;
 
-    var showSchedule = isDev;
+    var showSchedule = true;
     if (window.location.hash.indexOf("showschedule") != -1)
         showSchedule = true;
 
