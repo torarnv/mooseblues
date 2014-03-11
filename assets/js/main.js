@@ -100,6 +100,11 @@
 
                 var duration = end.diff(start, 'minutes')
                 var isAllDay = duration == (60 * 24);
+
+                // Limit to all day events. Reverse when calendar is ready.
+                if (!isAllDay)
+                    return true;
+
                 if (isAllDay)
                     duration = 60;
 
@@ -109,6 +114,9 @@
                     block = $("<div>").addClass("block");
 
                 var event = $("<div>").addClass("event");
+
+                if (isAllDay)
+                    event.addClass("allday");
 
                 // Try to make events look like they have a proportionate duration
                 event.css("min-height", duration * 0.5 + "px");
@@ -122,6 +130,11 @@
                 where = where.replace(/, Oslo, Norge$/, "");
                 if (where.length > 0)
                     content += "<br><span class='location'>" + where + "</span>";
+
+                var what = item.content.$t
+                what = what.replace(/\n/g, "<br>");
+                if (what.length > 0)
+                    content += "<br><span class='description'>" + what + "</span>";
 
                 event.append(content);
 

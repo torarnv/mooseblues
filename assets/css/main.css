@@ -560,14 +560,14 @@ a:after {
     border-left: 2px solid #bcd;
 }
 
-.event .time {
+.event .title {
+	font-weight: 300;
+}
+
+.event .time, .event.allday .title {
 	font-weight: 400;
 	padding-right: 6px;
 	font-size: 90%;
-}
-
-.event .title {
-	font-weight: 300;
 }
 
 .event .location {
