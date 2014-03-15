@@ -682,6 +682,12 @@ a:after {
 	opacity: 1.0;
 }
 
+#payment-info {
+	text-align: center;
+	padding: 15px 0px 5px 0px;
+	font-size: 110%;
+}
+
 @media (max-width: 767px) {
 	#payment-options, #payment-provider {
 		text-align: center;
