@@ -251,13 +251,9 @@ function initializeMap() {
     // Fetch markers
 
     // Route through YQL since Google Mapsengine doesn't do CORS for KML
-    $.getJSON("http://query.yahooapis.com/v1/public/yql", {
-        q: "select * from xml where url=\"https://mapsengine.google.com/map/kml?" +
-            "mid=z01mYUD2Vnfo.kW22snNl3_zQ&lid=z01mYUD2Vnfo.kt6p-FRSwQG8\"",
-        format: "json"
-    },
-    function (data) {
-        $.each(data.query.results.kml.Document.Placemark, function(i, place) {
+    $.getJSON("http://query.yahooapis.com/v1/public/yql/torarnv/moose-map-markers", { format: "json" }, function (data) {
+        $.each(data.query.results.Folder, function(i, folder) {
+        $.each(folder.Placemark, function(i, place) {
 
             var coords = place.Point.coordinates.split(',', 2);
             var pos = new google.maps.LatLng(coords[1], coords[0]);
@@ -340,6 +336,7 @@ function initializeMap() {
             });
 
             markers.push(marker);
+        });
         });
 
         markersDone = true;
