@@ -87,7 +87,7 @@ a:after {
     text-align:center;
     background-attachment: relative;
     background-position: center center;
-    min-height: 700px;
+    height: 720px;
     width: 100%;
 
     -webkit-background-size: 100%;
@@ -101,9 +101,15 @@ a:after {
     background-size: cover;
 }
 
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
 #headerwrap .container {
-	min-height: inherit;
+	height: 100%;
 	display: table;
+	width: 100%;
 }
 
 #headerwrap .row {
@@ -113,8 +119,8 @@ a:after {
 
 #mooselogo {
 	background-color: rgba(255, 255, 255, 0.8);
-    max-height: 800px;
-    max-width: 800px;
+    max-height: 530px;
+    max-width: 530px;
 }
 
 #mooselogo:before{
@@ -130,13 +136,15 @@ a:after {
 
 @media (max-width: 767px) {
     #headerwrap {
-        min-height: 400px;
+        height: 420px;
+    }
+    #headerwrap .container {
+		width: 90%;
     }
     #mooselogo {
-        width: 75%;
-        margin-left: 12.5%;
-        max-height: 450px;
-        max-width: 450px;
+        max-height: 320px;
+        max-width: 320px;
+
     }
 }
 
