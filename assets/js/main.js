@@ -192,14 +192,9 @@ function getDPR() {
             (min-resolution: 2dppx)";
     if (window.matchMedia(mediaQuery).matches)
       return 2;
-      mediaQuery = "(-webkit-min-device-pixel-ratio: 0.75),\
-            (min--moz-device-pixel-ratio: 0.75),\
-            (-o-min-device-pixel-ratio: 3/4),\
-            (min-resolution: 0.75dppx)";
-    if (window.matchMedia(mediaQuery).matches)
-      return 0.7;
-  } else
-    return 1;
+  }
+    
+  return 1;
 }
 
 var viewportHeight = $(window).height();
@@ -323,7 +318,7 @@ function initializeMap() {
                     if (data.value.indexOf("custom/") == 0) {
                         baseurl = "/assets/img/"
                         data.value = data.value.replace("custom/", "");
-                        if (dpr > 1)
+                        if (dpr == 2)
                             data.value += "_" + dpr + "x";
                         data.value += ".png"
                     } else {
