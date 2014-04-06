@@ -1,3 +1,7 @@
+
+var viewportHeight = $(window).height();
+var mapwrap = $("#mapwrap");
+
 ;(function(){
 
     var script = document.createElement('script');
@@ -17,8 +21,8 @@
     $('.menu-wrap a').on('click', toggleMenu);
 
     $('#signup-form').validate({
-        submitHandler: function(form) {
 
+        submitHandler: function(form) {
             var mappings = {
                  'firstname' : 'fname',
                  'lastname'  : 'lname' ,
@@ -168,8 +172,10 @@
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC19zE5nFPp669pJnxNQc7lJqZaKybsM8E&sensor=false' +
-      '&callback=initializeMap';
+      '&callback=initializeMap&libraries=places,geometry';
     document.body.appendChild(script);
+
+    checkIfMapIsVisible();
 
 })(jQuery)
 
@@ -197,9 +203,6 @@ function getDPR() {
   return 1;
 }
 
-var viewportHeight = $(window).height();
-var mapwrap = $("#mapwrap");
-
 function mapIsVisible() {
     var bounds = mapwrap[0].getBoundingClientRect();
     if ((bounds.top + (bounds.height / 2)) < viewportHeight)
@@ -217,10 +220,25 @@ function centerMapInViewport() {
     return true;
 }
 
+function showInfoWindow(map, marker, content) {
+      var infowindow = new google.maps.InfoWindow({
+            content: content
+        });
+        
+
+        if (openInfoWindow)
+            openInfoWindow.close();
+
+        infowindow.open(map, marker);
+        openInfoWindow = infowindow;
+}
+
 var map;
 var markers = []
 var markersDone = false;
 var openInfoWindow;
+var placeService;
+var streetViewService;
 
 function initializeMap() {
     var mapOptions = {
@@ -232,6 +250,8 @@ function initializeMap() {
     };
 
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    placeService = new google.maps.places.PlacesService(map);
+    streetViewService = new google.maps.StreetViewService();
 
     var mapUrl = "https://mapsengine.google.com/map/edit?mid=z01mYUD2Vnfo.kW22snNl3_zQ"
 
@@ -266,17 +286,7 @@ function initializeMap() {
                 title: place.name
             });
 
-            var infowindow = new google.maps.InfoWindow({
-                content: "<b>" + place.name + "</b>"
-            });
-
-            google.maps.event.addListener(marker, 'click', function() {
-                if (openInfoWindow)
-                    openInfoWindow.close();
-
-                infowindow.open(map, marker);
-                openInfoWindow = infowindow;
-            });
+            place.extendedData = {}
 
             var extendedData = place.ExtendedData;
             if (!$.isArray(extendedData))
@@ -285,61 +295,129 @@ function initializeMap() {
             $.each(extendedData, function(i, data) {
                 data = data.Data;
 
-                if (data.value == null)
-                    return true; // next
+                place.extendedData[data.displayName] = data.value;
+            });
 
-                if (data.displayName == "id") {
-                    var item = $("#" + data.value);
-                    item.wrap($("<a>").click(function() {
-                        if (!marker.getMap())
-                            marker.setMap(map);
+            google.maps.event.addListener(marker, 'click', function() {
+                var request = {
+                    location: marker.getPosition(),
+                    rankBy: google.maps.places.RankBy.DISTANCE,
+                    keyword: "*"
+                };
 
-                        marker.setAnimation(google.maps.Animation.BOUNCE);
-                        setTimeout(function() {
-                            marker.setAnimation(null);
-                        }, 1400 /* bounce twice */);
+            
+                if (place.extendedData["place_id"] != "0") {
 
-                        if (map.getZoom() < 15)
-                            map.setZoom(15);
+                    placeService.nearbySearch(request, function(result, status) {
+                        
+                        if (status == google.maps.places.PlacesServiceStatus.OK && result.length > 0) {
+                            var place = result[0]
+                            placeService.getDetails({ reference : place.reference }, function(place, status) {
+                                if (status != google.maps.places.PlacesServiceStatus.OK)
+                                    return;
 
-                        allowDropMarkers = true; // Just in case
+                                var content = $("#infowindow-template").children().first().clone().show();
+                                
+                                $(content).find(".gm-title").append(place.name);
+                                $(content).find(".gm-addr").append(place.formatted_address);
 
-                        if (centerMapInViewport())
-                            map.setCenter(marker.getPosition());
-                        else
-                            map.panTo(marker.getPosition());
-                    }));
+                                var website = $('<a>', { href: place.website } )[0];
+                                $(content).find(".gm-website a").attr("href", place.website).append(website.hostname.replace(/^www\./, ''))
 
-                    item.css("display", "inline-block");
+                                $(content).find(".gm-phone").append(place.international_phone_number);
 
-                } else if (data.displayName == "icon") {
-                    var iconSize = 36;
-                    var baseurl = "http://mt.google.com/vt/icon/name=icons/spotlight/";
-                    if (data.value.indexOf("custom/") == 0) {
-                        baseurl = "/assets/img/"
-                        data.value = data.value.replace("custom/", "");
-                        if (dpr == 2)
-                            data.value += "_" + dpr + "x";
-                        data.value += ".png"
-                    } else {
-                        data.value += ".png&scale=" + (1.5 * dpr)
-                    }
+                                    
+                                $(content).find(".gm-rev .gm-numeric-rev").append(place.rating);
+                                $(content).find(".gm-rev .gm-stars-f").css("width",  65 * place.rating / 5);
+                                $(content).find(".gm-rev a").attr("href", place.url);
+                
+                                var placeLocation = new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng())
+                                streetViewService.getPanoramaByLocation(placeLocation, 100, function(panorama, status) {
+                                    if (status != google.maps.StreetViewStatus.OK)
+                                        return;
 
-                    var icon = {
-                        url: baseurl + data.value,
-                        size: new google.maps.Size(iconSize * dpr , iconSize * dpr),
-                        scaledSize: new google.maps.Size(iconSize, iconSize),
-                        anchor: new google.maps.Point(iconSize / 2, iconSize / 2)
-                    };
-                    marker.setIcon(icon);
+                                    var panoramaLocation = panorama.location.latLng;
+                                    var heading = google.maps.geometry.spherical.computeHeading(panoramaLocation, placeLocation);
+                                    $(content).find(".gm-wsv img").attr("src",
+                                        "http://cbk0.google.com/cbk?output=thumbnail&w=250&h=50&ll=" 
+                                            + panoramaLocation.toUrlValue() + "&yaw=" + heading
+                                    );
+                                    $(content).find(".gm-wsv").on('click', function() {
+                                        var streetView = map.getStreetView();
+                                        streetView.setPosition(panoramaLocation);
+                                        streetView.setPov({
+                                            heading: heading,
+                                            zoom: 1,
+                                            pitch: 0
+                                        });
+                                        streetView.setVisible(true);
+                                    });
+                                    
+                                });
+
+                                showInfoWindow(map, marker, content[0])
+                            });
+                        }
+                    });
+                } else {
+                    showInfoWindow(map, marker, "<b>" + place.name + "</b>");
                 }
             });
+     
+            if (place.extendedData["id"] != null) {
+                var item = $("#" + place.extendedData["id"]);
+                item.wrap($("<a>").click(function() {
+                    if (!marker.getMap())
+                        marker.setMap(map);
+
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    setTimeout(function() {
+                        marker.setAnimation(null);
+                    }, 1400 /* bounce twice */);
+
+                    if (map.getZoom() < 15)
+                        map.setZoom(15);
+
+                    allowDropMarkers = true; // Just in case
+
+                    if (centerMapInViewport())
+                        map.setCenter(marker.getPosition());
+                    else
+                        map.panTo(marker.getPosition());
+                }));
+
+                item.css("display", "inline-block");
+
+            } 
+            if (place.extendedData["icon"] != null) {
+                var icon = place.extendedData["icon"]
+                var iconSize = 36;
+                var baseurl = "http://mt.google.com/vt/icon/name=icons/spotlight/";
+                if (icon.indexOf("custom/") == 0) {
+                    baseurl = "/assets/img/"
+                    icon = icon.replace("custom/", "");
+                    if (dpr == 2)
+                        data.value += "_" + dpr + "x";
+                    icon += ".png"
+                } else {
+                    icon += ".png&scale=" + (1.5 * dpr)
+                }
+
+                var icon = {
+                    url: baseurl + icon,
+                    size: new google.maps.Size(iconSize * dpr , iconSize * dpr),
+                    scaledSize: new google.maps.Size(iconSize, iconSize),
+                    anchor: new google.maps.Point(iconSize / 2, iconSize / 2)
+                };
+                marker.setIcon(icon);
+            }
 
             markers.push(marker);
         });
         });
 
         markersDone = true;
+        checkIfMapIsVisible();
         dropMarkersIfPossble();
     });
 }
