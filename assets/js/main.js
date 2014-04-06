@@ -1,5 +1,10 @@
 ;(function(){
 
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'assets/js/smoothscroll.js';
+    document.body.appendChild(script);
+
 	function toggleMenu() {
 		$('#menuToggle').toggleClass('active');
         $('body').toggleClass('body-push-toleft');
