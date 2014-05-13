@@ -294,11 +294,9 @@ function initializeMap() {
 
             var extendedData = place.ExtendedData;
             if (!$.isArray(extendedData))
-                extendedData = [extendedData];
+                extendedData = extendedData.Data;
 
             $.each(extendedData, function(i, data) {
-                data = data.Data;
-
                 place.extendedData[data.displayName] = data.value;
             });
 
@@ -391,8 +389,8 @@ function initializeMap() {
                 }));
 
                 item.css("display", "inline-block");
+            }
 
-            } 
             if (place.extendedData["icon"] != null) {
                 var icon = place.extendedData["icon"]
                 var iconSize = 36;
