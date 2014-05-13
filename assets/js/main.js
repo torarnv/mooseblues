@@ -95,7 +95,7 @@ var mapwrap = $("#mapwrap");
         showSchedule = true;
 
     if (showSchedule) {
-        //$("#schedule-soon").remove();
+        $("#schedule-soon").remove();
 
         var calendar_json_url = "http://www.google.com/calendar/feeds/rksrr5n0pri7qd9sfmguqs5moc%40group.calendar.google.com/public/full?alt=json&&orderby=starttime&sortorder=ascending&futureevents=true"
         var events = {};
@@ -116,7 +116,7 @@ var mapwrap = $("#mapwrap");
                 var isAllDay = duration == (60 * 24);
 
                 // Limit to all day events. Reverse when calendar is ready.
-                if (!isAllDay)
+                if (isAllDay)
                     return true;
 
                 if (isAllDay)
@@ -141,14 +141,18 @@ var mapwrap = $("#mapwrap");
                 content += "<span class='title'>" + item.title.$t + "</span>";
 
                 var where = item.gd$where[0].valueString;
-                where = where.replace(/, Oslo, Norge$/, "");
+                where = where.split(",")[0];
+
                 if (where.length > 0)
                     content += "<br><span class='location'>" + where + "</span>";
 
                 var what = item.content.$t
                 what = what.replace(/\n/g, "<br>");
-                if (what.length > 0)
-                    content += "<br><span class='description'>" + what + "</span>";
+                if (what.length > 0) {
+                    //content += "<br><span class='description'>" + what + "</span>";
+                    event.attr("data-content", what);
+                    event.popover({ placement: 'bottom', trigger: 'hover', html: true, container: 'body'});
+                }
 
                 event.append(content);
 
