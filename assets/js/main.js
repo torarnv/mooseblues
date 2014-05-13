@@ -399,7 +399,7 @@ function initializeMap() {
                     baseurl = "/assets/img/"
                     icon = icon.replace("custom/", "");
                     if (dpr == 2)
-                        data.value += "_" + dpr + "x";
+                        icon += "_" + dpr + "x";
                     icon += ".png"
                 } else {
                     icon += ".png&scale=" + (1.5 * dpr)
