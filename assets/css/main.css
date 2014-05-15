@@ -44,6 +44,7 @@ p {
 a {
     color: #3B6B9A;
     word-wrap: break-word;
+    cursor: pointer;
 
     -webkit-transition: color 0.1s ease-in, background 0.1s ease-in;
     -moz-transition: color 0.1s ease-in, background 0.1s ease-in;

@@ -141,10 +141,18 @@ var mapwrap = $("#mapwrap");
                 content += "<span class='title'>" + item.title.$t + "</span>";
 
                 var where = item.gd$where[0].valueString;
-                where = where.split(",")[0];
+                var whereId = where.match(/.*\[(.*)\].*/);
+                if (whereId)
+                    whereId = whereId[1]
 
-                if (where.length > 0)
-                    content += "<br><span class='location'>" + where + "</span>";
+                where = where.split(",")[0];
+                if (where.length > 0) {
+                    var whereSpan = $("<span>").addClass("location").text(where);
+                    if (whereId)
+                        whereSpan.addClass(whereId);
+
+                    content += "<br>" + whereSpan[0].outerHTML
+                }
 
                 var what = item.content.$t
                 what = what.replace(/\n/g, "<br>");
@@ -367,8 +375,8 @@ function initializeMap() {
             });
      
             if (place.extendedData["id"] != null) {
-                var item = $("#" + place.extendedData["id"]);
-                item.wrap($("<a>").click(function() {
+                var items = $(".location." + place.extendedData["id"]);
+                items.wrap($("<a>").click(function() {
                     if (!marker.getMap())
                         marker.setMap(map);
 
@@ -388,7 +396,7 @@ function initializeMap() {
                         map.panTo(marker.getPosition());
                 }));
 
-                item.css("display", "inline-block");
+                items.css("display", "inline-block");
             }
 
             if (place.extendedData["icon"] != null) {
