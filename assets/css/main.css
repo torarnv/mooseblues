@@ -775,3 +775,28 @@ a:after {
 	padding-right: 10px;
 	padding-left: 10px;
 }
+
+/* Gallery */
+.carousel-control {
+	background: none !important;
+}
+
+@media (min-width: 768px) {
+	.carousel-control {
+		opacity: 0.0;
+		-webkit-transition: all .1s ease-in-out;
+	   -moz-transition: all .1s ease-in-out;
+		-ms-transition: all .1s ease-in-out;
+		 -o-transition: all .1s ease-in-out;
+			transition: all .1s ease-in-out;
+	}
+	.carousel-control:hover {
+		opacity: 1.0;
+		-webkit-transition: all .1s ease-in-out;
+	   -moz-transition: all .1s ease-in-out;
+		-ms-transition: all .1s ease-in-out;
+		 -o-transition: all .1s ease-in-out;
+			transition: all .1s ease-in-out;
+	}
+}
+
