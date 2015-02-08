@@ -4,8 +4,7 @@ var mapwrap = $("#mapwrap");
 
 ;(function(){
 
-    var isDev = window.location.host.indexOf("dev.mooseblues.no") != -1 ||
-                window.location.hash.indexOf("devmode") != -1;
+    var isDev = window.location.host.indexOf("dev.mooseblues.no");
 
     var script = document.createElement('script');
     script.type = 'text/javascript';
@@ -95,7 +94,7 @@ var mapwrap = $("#mapwrap");
 
     $("#signup-form").sisyphus();
 
-    if (isDev)
+    if (window.location.hash.indexOf("enablesignup") != -1)
         $("#signup-button").prop("disabled", false);
 
     var showSchedule = false;
