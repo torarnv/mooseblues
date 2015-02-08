@@ -46,7 +46,7 @@ var mapwrap = $("#mapwrap");
             if (isDev)
                 redirect += ".html"
             else
-                alert('redirect = "https://www." + redirect');
+                redirect = "https://www." + redirect;
 
             var formData = $(form).serialize().replace(/\+/g, '%20');
             window.location.href = redirect + "#" + formData;
