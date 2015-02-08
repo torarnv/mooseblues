@@ -4,7 +4,7 @@ var mapwrap = $("#mapwrap");
 
 ;(function(){
 
-    var isDev = window.location.host.indexOf("dev.mooseblues.no");
+    var isDev = window.location.host.indexOf("dev.mooseblues.no") != -1;
 
     var script = document.createElement('script');
     script.type = 'text/javascript';
