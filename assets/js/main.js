@@ -4,6 +4,9 @@ var mapwrap = $("#mapwrap");
 
 ;(function(){
 
+    var isDev = window.location.host.indexOf("dev.mooseblues.no") != -1 ||
+                window.location.hash.indexOf("devmode") != -1;
+
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = 'assets/js/smoothscroll.js';
@@ -24,23 +27,27 @@ var mapwrap = $("#mapwrap");
 
         submitHandler: function(form) {
             var mappings = {
-                 'firstname' : 'fname',
-                 'lastname'  : 'lname' ,
-                 'city'      : 'atr.563974' ,
-                 'country'   : 'atr.563975' ,
-                 'email'     : 'email' ,
-                 'role'      : 'atr.563976' ,
-                 'ticket'    : 'price' ,
-                 'otherinfo' : 'atr.563977',
+                 'firstname'   : 'fname',
+                 'lastname'    : 'lname' ,
+                 'city'        : 'atr.724104' ,
+                 'country'     : 'atr.724105' ,
+                 'email'       : 'email' ,
+                 'repeatemail' : 'repeatemail' ,
+                 'role'        : 'atr.724107' ,
+                 'ticket'      : 'price' ,
+                 'otherinfo'   : 'atr.724106',
             };
 
-            for (var field in mappings)
-                $("*[name*='" + field + "']").attr('name', "$" + mappings[field]);
+            $("input[name='repeatemail']").val($("input[name='email']").val());
 
-            if (window.location.hostname == "www.mooseblues.no")
-                var redirect = "https://www.deltager.no/moose_blues_2014"
+            for (var field in mappings)
+                $("*[name='" + field + "']").attr('name', "$" + mappings[field]);
+
+            var redirect = "deltager.no/moose_blues_2015_29052015"
+            if (isDev)
+                redirect += ".html"
             else
-                var redirect = "deltager.html"
+                alert('redirect = "https://www." + redirect');
 
             var formData = $(form).serialize().replace(/\+/g, '%20');
             window.location.href = redirect + "#" + formData;
@@ -88,7 +95,8 @@ var mapwrap = $("#mapwrap");
 
     $("#signup-form").sisyphus();
 
-    var isDev = window.location.host.indexOf("dev.mooseblues.no") != -1;
+    if (isDev)
+        $("#signup-button").prop("disabled", false);
 
     var showSchedule = false;
     if (window.location.hash.indexOf("showschedule") != -1)
