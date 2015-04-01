@@ -214,6 +214,10 @@ a:after {
 	text-align: justify;
 }
 
+.justified p {
+	text-align: justify
+}
+
 #accomodation p, #venues p  {
 	/*padding-left: 50px;*/
 }
