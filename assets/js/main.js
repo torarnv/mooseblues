@@ -6,6 +6,8 @@ var mapwrap = $("#mapwrap");
 
     var isDev = window.location.host.indexOf("dev.mooseblues.no") != -1;
 
+    var googleApiKey = 'AIzaSyC19zE5nFPp669pJnxNQc7lJqZaKybsM8E'
+
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = 'assets/js/smoothscroll.js';
@@ -97,16 +99,18 @@ var mapwrap = $("#mapwrap");
     if (window.location.hash.indexOf("enablesignup") != -1)
         $("#signup-button").prop("disabled", false);
 
-    var showSchedule = false;
+    var showSchedule = true;
     if (window.location.hash.indexOf("showschedule") != -1)
         showSchedule = true;
 
     if (showSchedule) {
         $("#schedule-soon").remove();
 
-        var calendar_json_url = "http://www.google.com/calendar/feeds/rksrr5n0pri7qd9sfmguqs5moc%40group.calendar.google.com/public/full?alt=json&&orderby=starttime&sortorder=ascending"
+        var calendarID = "rksrr5n0pri7qd9sfmguqs5moc%40group.calendar.google.com"
+        var calendar_json_url = "https://www.googleapis.com/calendar/v3/calendars/"
+                                + calendarID + "/events?key=" + googleApiKey
+                                + "&orderBy=startTime&singleEvents=True"
         var events = {};
-
         $.getJSON(calendar_json_url, function(data) {
 
             var block;
@@ -114,17 +118,16 @@ var mapwrap = $("#mapwrap");
             var previousStart;
             var previousEnd;
 
-            $.each(data.feed.entry, function(i, item){
+            $.each(data.items, function(i, item){
 
-                var start = moment(item.gd$when[0].startTime)
-                var end = moment(item.gd$when[0].endTime)
+                var start = moment(item.start.date || item.start.dateTime)
+                var end = moment(item.end.date || item.end.dateTime)
+
+                console.log(item)
+                console.log(start)
 
                 var duration = end.diff(start, 'minutes')
                 var isAllDay = duration == (60 * 24);
-
-                // Limit to all day events. Reverse when calendar is ready.
-                if (isAllDay)
-                    return true;
 
                 if (isAllDay)
                     duration = 60;
@@ -145,9 +148,9 @@ var mapwrap = $("#mapwrap");
                 var content = "";
                 if (!isAllDay)
                     content += "<span class='time'>" + start.format("HH:mm") + "-" + end.format("HH:mm") + "</span><br>";
-                content += "<span class='title'>" + item.title.$t + "</span>";
+                content += "<span class='title'>" + item.summary + "</span>";
 
-                var where = item.gd$where[0].valueString;
+                var where = item.location || '';
                 var whereId = where.match(/.*\[(.*)\].*/);
                 if (whereId)
                     whereId = whereId[1]
@@ -161,7 +164,7 @@ var mapwrap = $("#mapwrap");
                     content += "<br>" + whereSpan[0].outerHTML
                 }
 
-                var what = item.content.$t
+                var what = item.description || ''
                 what = what.replace(/\n/g, "<br>");
                 if (what.length > 0) {
                     //content += "<br><span class='description'>" + what + "</span>";
@@ -190,7 +193,7 @@ var mapwrap = $("#mapwrap");
     // Async Google Maps loading
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC19zE5nFPp669pJnxNQc7lJqZaKybsM8E&sensor=false' +
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=' + googleApiKey + '&sensor=false' +
       '&callback=initializeMap&libraries=places,geometry';
     document.body.appendChild(script);
 
