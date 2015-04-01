@@ -771,13 +771,22 @@ a:after {
 	padding-top: 20px;
 }
 
-.team:hover {
+/*.team:hover {
 	background: white;
-}
+}*/
 
 .team a {
 	padding-right: 10px;
 	padding-left: 10px;
+}
+
+.team img {
+	width: 120px;
+	height: 120px;
+}
+
+.team p {
+	margin-top: 20px;
 }
 
 /* Gallery */
