@@ -30,21 +30,18 @@ var mapwrap = $("#mapwrap");
             var mappings = {
                  'firstname'   : 'fname',
                  'lastname'    : 'lname' ,
-                 'city'        : 'atr.724104' ,
-                 'country'     : 'atr.724105' ,
+                 'city'        : 'atr.907936' ,
+                 'country'     : 'atr.907937' ,
                  'email'       : 'email' ,
-                 'repeatemail' : 'repeatemail' ,
-                 'role'        : 'atr.724107' ,
+                 'role'        : 'atr.907939' ,
                  'ticket'      : 'price' ,
-                 'otherinfo'   : 'atr.724106',
+                 'otherinfo'   : 'atr.907938',
             };
-
-            $("input[name='repeatemail']").val($("input[name='email']").val());
 
             for (var field in mappings)
                 $("*[name='" + field + "']").attr('name', "$" + mappings[field]);
 
-            var redirect = "deltager.no/moose_blues_2015_29052015"
+            var redirect = "deltager.no/moose_blues_2016"
             if (isDev)
                 redirect += ".html"
             else
