@@ -24,6 +24,7 @@ var mapwrap = $("#mapwrap");
 
     $('.menu-wrap a').on('click', toggleMenu);
 
+    /*
     $('#signup-form').validate({
 
         submitHandler: function(form) {
@@ -92,6 +93,7 @@ var mapwrap = $("#mapwrap");
     });
 
     $("#signup-form").sisyphus();
+    */
 
     if (window.location.hash.indexOf("enablesignup") != -1)
         $("#signup-button").prop("disabled", false);
