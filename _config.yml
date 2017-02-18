@@ -1,8 +1,6 @@
 name: Moose Blues
 markdown: redcarpet
-pygments: true
 safe: true
 lsi: false
-pygments: true
 source: .
 baseurl: /
